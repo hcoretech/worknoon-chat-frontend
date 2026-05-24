@@ -1,7 +1,47 @@
 {
+  
+  "scripts": {
+  
+    
+  "dev": "next dev",
+  
+    
+  "build": "next build",
+  
+    
+  "start": "next start",
+  
+    
+  "lint": "eslint",
+  
+    
+  "lint:fix": "eslint --fix"
+  
+  },
+  
   "dependencies": {
-    "next": "^16.2.6",
-    "react": "^19.2.6",
-    "react-dom": "^19.2.6"
+  
+    
+  "next": "^16.2.6",
+  
+    
+  "react": "^19.2.6",
+  
+    
+  "react-dom": "^19.2.6"
+  
+  },
+  
+  "devDependencies": {
+  
+    
+  "@types/node": "25.9.1",
+  
+    
+  "@types/react": "^19.2.15",
+  
+    
+  "typescript": "6.0.3"
+  
   }
 }
