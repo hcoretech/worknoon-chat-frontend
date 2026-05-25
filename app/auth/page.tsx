@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-
+import { ThemeToggle } from "../../components/themeToggle";
+import axios from 'axios';
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -12,13 +13,22 @@ export default function AuthPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form Data:', formData);
-
+    setError('');
+    const URL = `http://localhost:9000/api/auth/${isLogin ? 'login' : 'signup'}`;
+    
+    try {
+      const res = await axios.post(URL, formData);
+      localStorage.setItem('token', res.data.token);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+      router.push('/chat');
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Authentication configuration dropped out.');
+    }
   };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 flex items-center justify-center p-4 transition-colors">
-
+      <div className="absolute top-6 right-6"><ThemeToggle /></div>
       
       <div className="w-full max-w-md bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 rounded-3xl shadow-xl p-8 space-y-6">
         <div className="text-center">
