@@ -1,4 +1,4 @@
-
+// 📁 File: src/components/profileModel.tsx
 'use client';
 
 import React from 'react';
@@ -14,6 +14,9 @@ interface ProfileModalProps {
 
 export default function ProfileModal({ isOpen, onClose, user, isDark, onLogout }: ProfileModalProps) {
   if (!isOpen || !user) return null;
+
+  // 🚀 FIXED FALLBACK: Safely resolve both 'name' and 'fullName' object properties from server records
+  const displayProfileName = user.name || user.fullName || 'Workspace Profile';
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -41,9 +44,9 @@ export default function ProfileModal({ isOpen, onClose, user, isDark, onLogout }
         {/* Big Initial Identity Avatar Header */}
         <div className="text-center pb-5 border-b border-gray-100 dark:border-zinc-800/60 select-none">
           <div className="h-16 w-16 rounded-2xl bg-neutral-900 text-white dark:bg-white dark:text-black mx-auto flex items-center justify-center font-black text-xl uppercase shadow-md mb-3">
-            {(user.name || 'U').charAt(0)}
+            {displayProfileName.charAt(0)}
           </div>
-          <h2 className="text-sm font-black tracking-tight">{user.name || 'Workspace Profile'}</h2>
+          <h2 className="text-sm font-black tracking-tight">{displayProfileName}</h2>
           
           {/* Role Badges Layer Matrix */}
           <span className={`mt-1.5 px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider border inline-block ${
@@ -83,7 +86,7 @@ export default function ProfileModal({ isOpen, onClose, user, isDark, onLogout }
           className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-red-200 dark:border-red-900/40 bg-red-500/5 hover:bg-red-500 text-red-500 hover:text-white transition-all text-xs font-bold shadow-2xs focus:outline-none group mt-2"
         >
           <LogOut size={14} className="transition-transform group-hover:translate-x-0.5" />
-          <span>Logout Station</span>
+          <span>Logout</span>
         </button>
       </div>
     </div>

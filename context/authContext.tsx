@@ -5,13 +5,14 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 
-export type UserRole = 'customer' | 'designer' | 'merchant' | 'agent';
+export type UserRole = 'customer' | 'designer' | 'merchant' | 'agent'|'admin';
 
 interface AuthUserData {
   _id?:string;
+  fullName?:string
   id: string;
   name: string;
-  email: string;
+  email: string;''
   role: UserRole;
   token: string;
 }

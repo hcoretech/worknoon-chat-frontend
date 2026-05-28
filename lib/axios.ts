@@ -1,11 +1,7 @@
-// 📁 File: src/lib/axios.ts
+
 import axios, { AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
 
-/**
- * Centrally configured Axios instance for system API orchestrations.
- * Configured with timeout safety thresholds and custom security context propagation.
- */
 const api: AxiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:9000',
   timeout: 12000,
@@ -61,11 +57,7 @@ api.interceptors.request.use(
   }
 );
 
-/**
- * Global Response Interceptor
- * Intercepts incoming server responses and centrally intercepts 
- * tracking errors like expired JSON Web Tokens.
- */
+
 api.interceptors.response.use(
   (response) => response,
   async (error) => {

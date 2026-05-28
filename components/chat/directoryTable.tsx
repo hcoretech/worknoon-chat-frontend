@@ -5,7 +5,7 @@ import React from 'react';
 import { Search, RefreshCw, Users, MessageSquare, WifiOff } from 'lucide-react';
 
 interface DirectoryTableProps {
-  isOnline: boolean; // 🚀 NEW: Network validation property parameter
+  isOnline: boolean; 
   isLoading: boolean;
   filteredUsers: any[];
   searchQuery: string;
@@ -13,6 +13,7 @@ interface DirectoryTableProps {
   activeFilter: string;
   setActiveFilter: (filter: string) => void;
   onStartChat: (id: string, role: string) => void;
+  channels: any[]; // 🚀 NEW: Extracted live channels synchronization array
 }
 
 export default function DirectoryTable({
@@ -23,10 +24,10 @@ export default function DirectoryTable({
   setSearchQuery,
   activeFilter,
   setActiveFilter,
-  onStartChat
+  onStartChat,
+  channels // 🚀 Destructure the data hook parameter
 }: DirectoryTableProps) {
 
-  // 🚀 FIXED: Captures link outages instantly to replace cascading spinning animations with diagnostic warning layouts
   if (!isOnline) {
     return (
       <div className="h-full w-full flex flex-col items-center justify-center p-6 text-center select-none animate-fadeIn bg-transparent">
@@ -91,45 +92,61 @@ export default function DirectoryTable({
             <thead>
               <tr className="border-b border-gray-100 dark:border-zinc-800 text-gray-400 dark:text-zinc-500 font-bold bg-gray-50/50 dark:bg-zinc-800/30 select-none">
                 <th className="p-3.5 font-semibold">Member</th>
-                <th className="p-3.5 font-semibold hidden sm:table-cell">Mail Info</th>
+                <th className="p-3.5 font-semibold hidden sm:table-cell">Mail </th>
                 <th className="p-3.5 font-semibold">Role Profile</th>
                 <th className="p-3.5 font-semibold text-right">Interface</th>
               </tr>
             </thead>
             <tbody>
-              {filteredUsers.map((member) => (
-                <tr key={member.id} className="border-b border-gray-50 dark:border-zinc-800/40 hover:bg-gray-50/30 dark:hover:bg-zinc-800/20 transition-colors">
-                  <td className="p-3.5 flex items-center gap-2.5">
-                    <div className="h-7 w-7 rounded-lg bg-neutral-900 text-white dark:bg-zinc-100 dark:text-black font-black flex items-center justify-center text-[10px] uppercase shrink-0 select-none">
-                      {member.name?.charAt(0) || 'U'}
-                    </div>
-                    <div className="min-w-0">
-                      <p className="font-bold text-gray-900 dark:text-zinc-100 truncate">{member.name}</p>
-                      <p className="text-[10px] text-gray-400 dark:text-zinc-500 sm:hidden truncate">{member.email}</p>
-                    </div>
-                  </td>
-                  <td className="p-3.5 text-gray-500 dark:text-zinc-400 font-medium hidden sm:table-cell truncate max-w-[160px]">{member.email}</td>
-                  <td className="p-3.5">
-                    <span className={`px-1.5 py-0.5 rounded text-[8px] font-black uppercase tracking-wider border select-none ${
-                      member.role === 'admin' ? 'bg-red-50 border-red-100 text-red-600 dark:bg-red-950/20 dark:border-red-900/30 dark:text-red-400'
-                        : member.role === 'merchant' ? 'bg-emerald-50 border-emerald-100 text-emerald-600 dark:bg-emerald-950/20 dark:border-emerald-900/30 dark:text-emerald-400'
-                        : member.role === 'agent' ? 'bg-amber-50 border-amber-100 text-amber-600 dark:bg-amber-950/20 dark:border-amber-900/30 dark:text-amber-400'
-                        : member.role === 'designer' ? 'bg-purple-50 border-purple-100 text-purple-600 dark:bg-purple-950/20 dark:border-purple-900/30 dark:text-purple-400'
-                        : 'bg-blue-50 border-blue-100 text-blue-600 dark:bg-blue-950/20 dark:border-blue-900/30 dark:text-blue-400'
-                    }`}>
-                      {member.role || 'user'}
-                    </span>
-                  </td>
-                  <td className="p-3.5 text-right">
-                    <button 
-                      onClick={() => onStartChat(member.id, member.role)}
-                      className="px-2.5 py-1.5 rounded-xl bg-neutral-900 border border-neutral-950 hover:bg-neutral-800 dark:bg-white dark:border-white dark:text-black dark:hover:bg-zinc-100 text-white text-[10px] font-black transition-all flex items-center gap-1.5 ml-auto shadow-2xs"
-                    >
-                      <MessageSquare size={10} /> <span className="hidden xs:inline">Open Chat</span>
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {filteredUsers.map((member) => {
+                const matchingChannel = channels.find(ch => {
+                  const partnerIdStr = (ch.recipient?.id || ch.initiator?.id || '').toString();
+                  return partnerIdStr === member.id.toString();
+                });
+
+                const unreadTallyCount = matchingChannel?.unreadCount || 0;
+
+                return (
+                  <tr key={member.id} className="border-b border-gray-50 dark:border-zinc-800/40 hover:bg-gray-50/30 dark:hover:bg-zinc-800/20 transition-colors group">
+                    <td className="p-3.5 flex items-center gap-2.5">
+                      <div className="h-7 w-7 rounded-lg bg-neutral-900 text-white dark:bg-zinc-100 dark:text-black font-black flex items-center justify-center text-[10px] uppercase shrink-0 select-none relative">
+                        {member.name?.charAt(0) || 'U'}
+                        
+                 
+                        {unreadTallyCount > 0 && (
+                          <span className="absolute -top-1.5 -right-1.5 min-w-[14px] h-[14px] bg-red-500 text-white font-black text-[8px] rounded-full flex items-center justify-center px-0.5 animate-bounce shadow-xs border border-white dark:border-zinc-900">
+                            {unreadTallyCount}
+                          </span>
+                        )}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="font-bold text-gray-900 dark:text-zinc-100 truncate group-hover:text-neutral-700 dark:group-hover:text-zinc-300 transition-colors">{member.name}</p>
+                        <p className="text-[10px] text-gray-400 dark:text-zinc-500 sm:hidden truncate">{member.email}</p>
+                      </div>
+                    </td>
+                    <td className="p-3.5 text-gray-500 dark:text-zinc-400 font-medium hidden sm:table-cell truncate max-w-[160px]">{member.email}</td>
+                    <td className="p-3.5">
+                      <span className={`px-1.5 py-0.5 rounded text-[8px] font-black uppercase tracking-wider border select-none ${
+                        member.role === 'admin' ? 'bg-red-50 border-red-100 text-red-600 dark:bg-red-950/20 dark:border-red-900/30 dark:text-red-400'
+                          : member.role === 'merchant' ? 'bg-emerald-50 border-emerald-100 text-emerald-600 dark:bg-emerald-950/20 dark:border-emerald-900/30 dark:text-emerald-400'
+                          : member.role === 'agent' ? 'bg-amber-50 border-amber-100 text-amber-600 dark:bg-amber-950/20 dark:border-amber-900/30 dark:text-amber-400'
+                          : member.role === 'designer' ? 'bg-purple-50 border-purple-100 text-purple-600 dark:bg-purple-950/20 dark:border-purple-900/30 dark:text-purple-400'
+                          : 'bg-blue-50 border-blue-100 text-blue-600 dark:bg-blue-950/20 dark:border-blue-900/30 dark:text-blue-400'
+                      }`}>
+                        {member.role || 'user'}
+                      </span>
+                    </td>
+                    <td className="p-3.5 text-right">
+                      <button 
+                        onClick={() => onStartChat(member.id, member.role)}
+                        className="px-2.5 py-1.5 rounded-xl bg-neutral-900 border border-neutral-950 hover:bg-neutral-800 dark:bg-white dark:border-white dark:text-black dark:hover:bg-zinc-100 text-white text-[10px] font-black transition-all flex items-center gap-1.5 ml-auto shadow-2xs"
+                      >
+                        <MessageSquare size={10} /> <span className="hidden xs:inline">Open Chat</span>
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         )}

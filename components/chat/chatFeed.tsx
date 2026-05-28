@@ -68,7 +68,7 @@ export default function ChatFeed({
         channelId: activeChannel._id,
         senderId: user?.id,
         text: typedText.trim(),
-        createdAt: new Date().toISOString(), // 🚀 Standardized parameter key to keep formats synced
+        createdAt: new Date().toISOString(),
         isOfflinePending: true 
       };
       setOfflineQueue((prev) => [...prev, newMsgPayload]);

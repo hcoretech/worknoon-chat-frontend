@@ -1,4 +1,4 @@
-// 📁 File: src/components/chat/feed/sideBar.tsx
+
 'use client';
 
 import React from 'react';
@@ -9,7 +9,7 @@ interface SidebarProps {
   setActiveFilter: (filter: string) => void;
   isOnline: boolean;
   onLogout: () => void;
-  onCloseMobile?: () => void; // 🚀 FIX: Made explicitly optional to support multi-device grids safely
+  onCloseMobile?: () => void; 
   isDark: boolean;
   user: any; 
 }
@@ -19,7 +19,7 @@ export default function Sidebar({
   setActiveFilter,
   isOnline,
   onLogout,
-  onCloseMobile, // 🚀 Destructured natively
+  onCloseMobile, 
   isDark,
   user 
 }: SidebarProps) {
@@ -43,7 +43,7 @@ export default function Sidebar({
             </span>
           </div>
           <button 
-            onClick={() => onCloseMobile?.()} // 🚀 FIX: Defensive chaining protection
+            onClick={() => onCloseMobile?.()} 
             className={`md:hidden p-1 rounded-lg transition-colors ${isDark ? 'hover:bg-zinc-800 text-zinc-500 hover:text-white' : 'hover:bg-gray-100 text-gray-400 hover:text-gray-900'}`}
           >
             <X size={18} />
@@ -54,33 +54,33 @@ export default function Sidebar({
         <div>
           <nav className="space-y-1">
             <FilterNavButton 
-              label="All Streams" 
+              label="All Users" 
               icon={<Layers size={15} />} 
               active={activeFilter === 'all'} 
-              onClick={() => { setActiveFilter('all'); onCloseMobile?.(); }} // 🚀 FIX: Chains optionally
+              onClick={() => { setActiveFilter('all'); onCloseMobile?.(); }} 
               isDark={isDark}
             />
             <FilterNavButton 
-              label="Agent Queues" 
+              label="Agents" 
               icon={<Shield size={15} />} 
               active={activeFilter === 'agent'} 
-              onClick={() => { setActiveFilter('agent'); onCloseMobile?.(); }} // 🚀 FIX: Chains optionally
+              onClick={() => { setActiveFilter('agent'); onCloseMobile?.(); }} 
               colorClass="text-amber-500 dark:text-amber-400" 
               isDark={isDark}
             />
             <FilterNavButton 
-              label="Merchant Desks" 
+              label="Merchants" 
               icon={<Store size={15} />} 
               active={activeFilter === 'merchant'} 
-              onClick={() => { setActiveFilter('merchant'); onCloseMobile?.(); }} // 🚀 FIX: Chains optionally
+              onClick={() => { setActiveFilter('merchant'); onCloseMobile?.(); }} 
               colorClass="text-emerald-500 dark:text-emerald-400" 
               isDark={isDark}
             />
             <FilterNavButton 
-              label="Designer Pods" 
+              label="Designer" 
               icon={<Palette size={15} />} 
               active={activeFilter === 'designer'} 
-              onClick={() => { setActiveFilter('designer'); onCloseMobile?.(); }} // 🚀 FIX: Chains optionally
+              onClick={() => { setActiveFilter('designer'); onCloseMobile?.(); }} 
               colorClass="text-purple-500 dark:text-purple-400" 
               isDark={isDark}
             />
@@ -116,11 +116,11 @@ export default function Sidebar({
           </div>
         ) : (
           <div className="p-2 text-center text-[10px] text-gray-400 animate-pulse">
-            Syncing workspace token credentials...
+            Syncing worknoon token credentials...
           </div>
         )}
 
-        {/* WebSocket Status Pill */}
+       
         <div className={`p-3 rounded-xl border flex items-center gap-2.5 text-xs font-semibold transition-all ${
           isOnline 
             ? 'bg-emerald-500/5 border-emerald-500/10 text-emerald-600 dark:text-emerald-400' 

@@ -13,16 +13,18 @@ interface ChatPanelProps {
   messagesList: any[];
   currentUserIdStr: string;
   typedText: string;
-  setTypedText: (text: string) => void;
+  // 🚀 FIXED CHANGE: Replaced setTypedText with parent onInputChange listener to catch dynamic keystrokes
+  onInputChange: (text: string) => void;
   onSendMessage: (e: React.FormEvent) => void;
   onCloseChat: () => void;
   activePartnerRealName: string;
   messageEndRef: React.RefObject<HTMLDivElement | null>;
   isDark: boolean;
-  // File upload fields passed down from your file handlers layer
   isFileUploading?: boolean;
   onFileChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   isOnline?: boolean;
+  // 🚀 NEW PROP: Injected reactive mapping arrays from parent socket state machine
+  typingUsers?: Record<string, { isTyping: boolean; name: string }>; 
 }
 
 export default function ChatPanel({
@@ -31,7 +33,7 @@ export default function ChatPanel({
   messagesList,
   currentUserIdStr,
   typedText,
-  setTypedText,
+  onInputChange,
   onSendMessage,
   onCloseChat,
   activePartnerRealName,
@@ -39,8 +41,10 @@ export default function ChatPanel({
   isDark,
   isFileUploading = false,
   onFileChange = () => {},
-  isOnline = true
+  isOnline = true,
+  typingUsers = {} // Default allocation helper boundary fallback
 }: ChatPanelProps) {
+  
   if (!partnerProfile || !activeChannel) {
     return (
       <div className={`h-full w-full flex flex-col items-center justify-center p-8 text-center text-gray-400 text-xs font-medium transition-colors ${
@@ -99,9 +103,15 @@ export default function ChatPanel({
             const normalizedCurrentUserId = (currentUserIdStr || '').toString();
             const isMe = messageSenderIdStr === normalizedCurrentUserId;
             const messageBodyText = msg.text || msg.messageBody || msg.message || '';
+            
+            // 🚀 REAL-TIME TIMESTAMP COMPILING LOGIC
+            const messageCreatedAtString = msg.createdAt || msg.timestamp;
+            const formattedTimeLabel = messageCreatedAtString 
+              ? new Date(messageCreatedAtString).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
+              : '';
 
             return (
-              <div key={msg._id || idx} className={`flex w-full ${isMe ? 'justify-end' : 'justify-start'}`}>
+              <div key={msg._id || idx} className={`flex flex-col w-full ${isMe ? 'items-end' : 'items-start'}`}>
                 <div className={`p-3 rounded-2xl text-[11px] font-medium leading-relaxed max-w-[85%] border shadow-2xs ${
                   isMe 
                     ? isDark 
@@ -113,6 +123,16 @@ export default function ChatPanel({
                 }`}>
                   <p className="whitespace-pre-wrap">{messageBodyText}</p>
                 </div>
+                
+                {/* 🚀 TELEMETRY STAMPS BOTTOM SUB-BAR CONTAINER: Displays timestamps & read updates */}
+                <div className="flex items-center gap-1.5 mt-1 text-[8px] font-bold text-gray-400 dark:text-zinc-500 select-none px-1">
+                  <span>{formattedTimeLabel}</span>
+                  {isMe && (
+                    <span className={`font-black transition-colors ${msg.isRead ? 'text-blue-500 dark:text-blue-400' : 'text-gray-300 dark:text-zinc-600'}`}>
+                      {msg.isRead ? "✓✓ Read" : "✓ Sent"}
+                    </span>
+                  )}
+                </div>
               </div>
             );
           })
@@ -120,13 +140,23 @@ export default function ChatPanel({
         <div ref={messageEndRef} />
       </div>
 
-      {/* 🚀 FIXED FOOT CONTAINER PANEL WITH INTEGRATED MESSAGEINPUT SUB-COMPONENT */}
+    
+      {Object.keys(typingUsers).length > 0 && (
+        <div className={`px-4 py-2 text-[9px] font-black italic tracking-wide animate-pulse border-t shrink-0 ${
+          isDark ? 'bg-zinc-900/60 border-zinc-800 text-zinc-400' : 'bg-gray-50 border-gray-100 text-gray-400'
+        }`}>
+          {Object.values(typingUsers).map(u => u.name).join(', ')} is typing...
+        </div>
+      )}
+
+      {/* FOOT CONTAINER PANEL WITH INTEGRATED MESSAGEINPUT SUB-COMPONENT */}
       <div className={`p-3 border-t shrink-0 ${
         isDark ? 'bg-[#1a252e] border-zinc-800' : 'bg-white border-gray-100'
       }`}>
         <MessageInput 
           typedText={typedText}
-          setTypedText={setTypedText}
+          // 🚀 FIXED ACTION HANDLER: Pipe textValue shifts back into parent telemetry observers
+          setTypedText={onInputChange} 
           isFileUploading={isFileUploading}
           isOnline={isOnline}
           onSendMessage={onSendMessage}
