@@ -84,6 +84,14 @@ export default function Sidebar({
               colorClass="text-purple-500 dark:text-purple-400" 
               isDark={isDark}
             />
+              <FilterNavButton 
+              label="Customer" 
+              icon={<Palette size={15} />} 
+              active={activeFilter === 'customer'} 
+              onClick={() => { setActiveFilter('customer'); onCloseMobile?.(); }} 
+              colorClass="text-purple-500 dark:text-purple-400" 
+              isDark={isDark}
+            />
           </nav>
         </div>
       </div>

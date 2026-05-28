@@ -41,14 +41,13 @@ export default function ProfileModal({ isOpen, onClose, user, isDark, onLogout }
           <X size={16} />
         </button>
 
-        {/* Big Initial Identity Avatar Header */}
+   
         <div className="text-center pb-5 border-b border-gray-100 dark:border-zinc-800/60 select-none">
           <div className="h-16 w-16 rounded-2xl bg-neutral-900 text-white dark:bg-white dark:text-black mx-auto flex items-center justify-center font-black text-xl uppercase shadow-md mb-3">
             {displayProfileName.charAt(0)}
           </div>
           <h2 className="text-sm font-black tracking-tight">{displayProfileName}</h2>
           
-          {/* Role Badges Layer Matrix */}
           <span className={`mt-1.5 px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider border inline-block ${
             user.role === 'admin' ? 'bg-red-50 border-red-100 text-red-600 dark:bg-red-950/20 dark:border-red-900/30'
               : user.role === 'merchant' ? 'bg-emerald-50 border-emerald-100 text-emerald-600 dark:bg-emerald-950/20 dark:border-emerald-900/30'
@@ -79,7 +78,6 @@ export default function ProfileModal({ isOpen, onClose, user, isDark, onLogout }
           </div>
         </div>
 
-        {/* Bottom Auxiliary Exit Station Trigger Button */}
         <button
           onClick={() => { onLogout(); onClose(); }}
           type="button"
