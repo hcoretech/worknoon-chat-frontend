@@ -40,7 +40,7 @@ export function useDashboardSync({
       try {
         setIsLoading(true);
         const [dirRes, chanRes] = await Promise.all([
-          api.get('/api/chat/directory'), // 🚀 FIXED: Targeted the isolated /meta route securely
+          api.get('/api/chat/directory'), 
           api.get('/api/chat/channels')
         ]);
         setDirectory(Array.isArray(dirRes.data) ? dirRes.data : []);

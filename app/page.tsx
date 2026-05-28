@@ -20,7 +20,7 @@ export default function RootIndexPage() {
     if (!token) {
       router.replace('/auth');
     } else if (activeRole === 'agent') {
-      router.replace('/admin');
+      router.replace('/dashboard');
     } else {
       router.replace('/dashboard');
     }

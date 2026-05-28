@@ -1,4 +1,4 @@
-// 📁 File: src/components/chat/inbox.tsx
+
 'use client';
 
 import React from 'react';

@@ -7,14 +7,14 @@ export function proxy(request: NextRequest) {
 
   // Syncing route detection rules with your split dashboard layouts
   const isDashboardRoute = pathname.startsWith('/dashboard');
-  const isAdminRoute = pathname.startsWith('/admin');
+
   const isAuthRoute = pathname === '/auth';
 
   // Read cookies directly during execution
   const token = request.cookies.get('token')?.value;
 
   // Guard Clause 1: Intercept unauthorized attempts to access communication decks
-  if ((isDashboardRoute || isAdminRoute) && !token) {
+  if ((isDashboardRoute ) && !token) {
     const loginRedirectUrl = new URL('/auth', request.url);
     loginRedirectUrl.searchParams.set('callbackUrl', pathname);
     return NextResponse.redirect(loginRedirectUrl);
@@ -32,7 +32,6 @@ export const config = {
   // 🟢 Enhanced matchers to capture deep routes targeting the administrative window
   matcher: [
     '/dashboard/:path*', 
-    '/admin/:path*',
     '/auth'
   ],
 };

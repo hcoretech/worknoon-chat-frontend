@@ -1,4 +1,4 @@
-// 📁 File: src/components/chat/topHeader.tsx
+
 'use client';
 
 import React from 'react';
@@ -42,7 +42,7 @@ export default function TopHeader({
           </button>
         )}
         <span className="text-sm font-black tracking-tight text-white">
-          {isUserAnAdmin ? '🛡️ Admin Dashboard' : ''}
+          {isUserAnAdmin ? '🛡️ Admin Dashboard' : 'dashboard'}
         </span>
       </div>
 

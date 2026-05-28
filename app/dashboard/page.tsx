@@ -1,4 +1,4 @@
-// 📁 File: src/app/dashboard/page.tsx
+
 'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
@@ -69,7 +69,7 @@ export default function DashboardPage() {
     fetchProfile();
   }, [isProfileOpen, user]);
 
-  // 🚀 HOOK TELEMTRY: Consume all states cleanly without secondary redeclarations or block scope errors
+
   const { 
     directory, 
     setDirectory, 
@@ -197,13 +197,60 @@ export default function DashboardPage() {
 
         <main className={`flex-1 rounded-none md:rounded-[24px] flex flex-col overflow-hidden shadow-2xl relative transition-colors duration-300 ${theme === 'dark' ? 'bg-[#1e2b35] text-gray-100 border border-zinc-800/60' : 'bg-[#f4f3ec] text-gray-900'}`}>
           {isUserAnAdmin && <AdminAnalytics directoryLength={directory.length} channelsLength={channels.length} />}
+           {isUserAnAdmin ? (
+               <WorkspaceColumnsLayout 
+               theme={theme} 
+               isMobileChatActiveView={isMobileChatActiveView} 
+               isBrowserOnline={isBrowserOnline} 
+               isLoading={isLoading} 
+               filteredUsers={filteredUsers} 
+               searchQuery={searchQuery} 
+               setSearchQuery={setSearchQuery} 
+               activeFilter={activeFilter} 
+               setActiveFilter={setActiveFilter} 
+               handleStartDirectoryChat={handleStartDirectoryChat} 
+               channels={channels} user={user} 
+               handleAdminDeleteUser={handleAdminDeleteUser} 
+               activeChannelId={activeChannelId} 
+               partnerProfile={partnerProfile} 
+               activeChannel={activeChannel} 
+               currentUserIdStr={currentUserIdStr} 
+               typedText={typedText} 
+               handleInputChangeAndEmitTypingStatus={handleInputChangeAndEmitTypingStatus}
+                handleSendMessage={handleSendMessage}
+                 setIsMobileChatActiveView={setIsMobileChatActiveView}
+                  messageEndRef={messageEndRef} typingUsers={typingUsers}
+                   handleAdminDeleteChannel={handleAdminDeleteChannel} />
+            ) : (
 
-          {isUserAnAdmin ? (
-       
-            <WorkspaceColumnsLayout theme={theme} isMobileChatActiveView={isMobileChatActiveView} isBrowserOnline={isBrowserOnline} isLoading={isLoading} filteredUsers={filteredUsers} searchQuery={searchQuery} setSearchQuery={setSearchQuery} activeFilter={activeFilter} setActiveFilter={setActiveFilter} handleStartDirectoryChat={handleStartDirectoryChat} channels={channels} user={user} handleAdminDeleteUser={handleAdminDeleteUser} activeChannelId={activeChannelId} partnerProfile={partnerProfile} activeChannel={activeChannel} currentUserIdStr={currentUserIdStr} typedText={typedText} handleInputChangeAndEmitTypingStatus={handleInputChangeAndEmitTypingStatus} handleSendMessage={handleSendMessage} setIsMobileChatActiveView={setIsMobileChatActiveView} messageEndRef={messageEndRef} typingUsers={typingUsers} handleAdminDeleteChannel={handleAdminDeleteChannel} />
-          ) : (
-            <StandardWorkspaceLayout theme={theme} isMobileChatActiveView={isMobileChatActiveView} channels={filteredChannels} activeChannelId={activeChannelId} setActiveChannelId={setActiveChannelId} setIsMobileChatActiveView={setIsMobileChatActiveView} partnerProfile={partnerProfile} activeChannel={activeChannel} currentUserIdStr={currentUserIdStr} typedText={typedText} handleInputChangeAndEmitTypingStatus={handleInputChangeAndEmitTypingStatus} handleSendMessage={handleSendMessage} messageEndRef={messageEndRef} typingUsers={typingUsers} />
-          )}
+  <StandardWorkspaceLayout 
+    theme={theme} 
+    isMobileChatActiveView={isMobileChatActiveView} 
+    channels={filteredChannels} 
+    activeChannelId={activeChannelId} 
+    setActiveChannelId={setActiveChannelId} 
+    setIsMobileChatActiveView={setIsMobileChatActiveView} 
+    partnerProfile={partnerProfile} 
+    activeChannel={activeChannel} 
+    currentUserIdStr={currentUserIdStr} 
+    typedText={typedText} 
+    handleInputChangeAndEmitTypingStatus={handleInputChangeAndEmitTypingStatus} 
+    handleSendMessage={handleSendMessage} 
+    messageEndRef={messageEndRef} 
+    typingUsers={typingUsers} 
+    
+    // 🟢 NEWLY INJECTED PROPS PIPELINES
+    isBrowserOnline={isBrowserOnline}
+    isLoading={isLoading}
+    filteredUsers={filteredUsers}
+    searchQuery={searchQuery}
+    setSearchQuery={setSearchQuery}
+    activeFilter={activeFilter}
+    setActiveFilter={setActiveFilter}
+    handleStartDirectoryChat={handleStartDirectoryChat}
+  />
+)}
+
         </main>
       </div>
 
