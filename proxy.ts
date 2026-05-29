@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-// Next.js expects the handler function to be named "middleware" explicitly
+
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
