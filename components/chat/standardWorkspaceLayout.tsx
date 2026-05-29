@@ -1,4 +1,4 @@
-// 📁 File: src/components/chat/standardWorkspaceLayout.tsx
+
 'use client';
 
 import React, { useState } from 'react';

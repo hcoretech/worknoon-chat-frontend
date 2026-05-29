@@ -1,4 +1,4 @@
-// 📁 File: src/hooks/useDashboardSync.ts
+
 'use client';
 
 import { useEffect, useState, useRef } from 'react';

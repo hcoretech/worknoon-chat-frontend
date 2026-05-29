@@ -1,4 +1,4 @@
-// 📁 File: src/components/profileModel.tsx
+
 'use client';
 
 import React from 'react';
@@ -15,7 +15,7 @@ interface ProfileModalProps {
 export default function ProfileModal({ isOpen, onClose, user, isDark, onLogout }: ProfileModalProps) {
   if (!isOpen || !user) return null;
 
-  // 🚀 FIXED FALLBACK: Safely resolve both 'name' and 'fullName' object properties from server records
+
   const displayProfileName = user.name || user.fullName || 'Workspace Profile';
 
   return (

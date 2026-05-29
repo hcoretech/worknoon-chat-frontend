@@ -1,4 +1,4 @@
-export type UserRole = 'customer' | 'merchant' | 'designer' | 'agent';
+export type UserRole = 'customer' | 'merchant' | 'designer' | 'agent'|'admin';
 
 export interface CustomProfile {
   displayName: string;

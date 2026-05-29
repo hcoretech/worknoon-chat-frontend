@@ -1,10 +1,10 @@
-// 📁 File: src/components/chat/chatPanel.tsx
+
 'use client';
 
 import React from 'react';
 import { MessageSquare, X, ArrowLeft, Trash2 } from 'lucide-react';
 
-// 🚀 IMPORT YOUR EXPORTED SUB-COMPONENT
+
 import MessageInput from "./messageInput";
 
 interface ChatPanelProps {
@@ -13,7 +13,6 @@ interface ChatPanelProps {
   messagesList: any[];
   currentUserIdStr: string;
   typedText: string;
-  // 🚀 FIXED CHANGE: Replaced setTypedText with parent onInputChange listener to catch dynamic keystrokes
   onInputChange: (text: string) => void;
   onSendMessage: (e: React.FormEvent) => void;
   onCloseChat: () => void;
@@ -23,9 +22,8 @@ interface ChatPanelProps {
   isFileUploading?: boolean;
   onFileChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   isOnline?: boolean;
-  // 🚀 NEW PROP: Injected reactive mapping arrays from parent socket state machine
   typingUsers?: Record<string, { isTyping: boolean; name: string }>; 
-  isAdmin?: boolean; // 🛡️ Admin access guard flag
+  isAdmin?: boolean; // 🛡️ Admin access 
   onAdminPurgeChannel?: (id: string) => void; // 🛡️ Admin channel deletion trigger
 }
 
@@ -60,7 +58,6 @@ export default function ChatPanel({
     );
   }
 
-  // 🚀 BONUS ASSESSMENT CRITERIA: EXTRACT WOOCOMMERCE ORDER & PRODUCT CONTEXT PIPELINES
   const productContextId = activeChannel.contextRefId || messagesList.find((m: any) => m.wooProductId)?.wooProductId;
   const orderContextId = messagesList.find((m: any) => m.wooOrderId)?.wooOrderId;
 
@@ -83,7 +80,7 @@ export default function ChatPanel({
         </div>
         
         <div className="flex items-center gap-2">
-          {/* 🛡️ EXCLUSIVE ADMINISTRATIVE ACTION PURGE TRASH ICON */}
+
           {isAdmin && onAdminPurgeChannel && (
             <button 
               type="button"
@@ -101,7 +98,6 @@ export default function ChatPanel({
         </div>
       </div>
 
-      {/* 🚀 BONUS: DYNAMIC WOOCOMMERCE CONTEXT METRICS CONSOLE BAR */}
       {(productContextId || orderContextId) && (
         <div className="px-4 py-2 bg-amber-500/10 dark:bg-amber-400/5 border-b border-amber-500/20 flex flex-col xs:flex-row items-stretch xs:items-center justify-between gap-1.5 text-[10px] font-black tracking-wide text-amber-700 dark:text-amber-400 select-none shrink-0">
           {productContextId && (

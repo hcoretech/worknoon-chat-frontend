@@ -19,7 +19,7 @@ interface LeftSidebarWrapperProps {
   activeChannelId: string | null;
   setActiveChannelId: (id: string | null) => void;
   setIsMobileChatActiveView: (active: boolean) => void;
-  adminAudits: any[]; // 🚀 FIXED: Added the required security metrics property to interface
+  adminAudits: any[];
 }
 
 export default function LeftSidebarWrapper({
@@ -36,11 +36,11 @@ export default function LeftSidebarWrapper({
   activeChannelId,
   setActiveChannelId,
   setIsMobileChatActiveView,
-  adminAudits // 🚀 FIXED: Destructured parameter correctly
+  adminAudits 
 }: LeftSidebarWrapperProps) {
   return (
     <>
-      {/* BLUR OVERLAY PANEL FOR MOBILE PHONE SIDEBARS */}
+ 
       {isMobileSidebarOpen && (
         <div 
           onClick={() => setIsMobileSidebarOpen(false)} 
@@ -64,8 +64,7 @@ export default function LeftSidebarWrapper({
           />
         </div>
 
-        {/* 🚀 FIXED PROPERTY ATTACHMENT TRAY */}
-        {/* Pass user and adminAudits cleanly as standalone layout hooks fields */}
+
         <SidebarNotificationDeck 
           channels={channels}
           activeChannelId={activeChannelId}

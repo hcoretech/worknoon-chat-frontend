@@ -1,4 +1,4 @@
-// 📁 File: src/components/chat/DirectoryTable.tsx
+
 'use client';
 
 import React from 'react';
@@ -14,7 +14,7 @@ interface DirectoryTableProps {
   setActiveFilter: (filter: string) => void;
   onStartChat: (id: string, role: string) => void;
   channels: any[];
-  isAdmin: boolean; // 🚀 NEW: Extracted administrative role tracking flag
+  isAdmin: boolean; 
   onAdminDeleteUser: (id: string) => void; // 🚀 NEW: User deletion execution callback
 }
 
@@ -141,8 +141,6 @@ export default function DirectoryTable({
         <td className="p-3.5 text-right">
           <div className="flex items-center justify-end gap-2">
             
-            {/* 🛡️ CORRECT ADMINISTRATIVE CONTROL SECURITY LAYER POSITIONING */}
-            {/* The trash minus button displays ONLY for admin, but the Open Chat button is open to all! */}
             {isAdmin && (
               <button 
                 type="button"

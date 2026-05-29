@@ -1,4 +1,4 @@
-// 📁 File: src/components/chat/feed/MessageInput.tsx
+
 'use client';
 
 import React, { useRef } from 'react';

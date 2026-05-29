@@ -10,10 +10,10 @@ export default function RootIndexPage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Wait for the global hydration wrapper to complete session checks
+ 
     if (isLoading) return;
 
-    // Direct lookups matching token validations across your cookies ledger
+
     const token = user?.token || Cookies.get('token') || null;
     const activeRole = user?.role || null;
 

@@ -1,4 +1,4 @@
-// 📁 File: src/components/chat/workspaceColumnsLayout.tsx
+
 'use client';
 
 import React from 'react';
